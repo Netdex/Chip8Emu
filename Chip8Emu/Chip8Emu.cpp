@@ -10,11 +10,12 @@
 using namespace std;
 
 const int PIXEL_WIDTH = 16;
+const int FRAME_DELAY = 10;
 
 const int WIDTH = 64 * PIXEL_WIDTH;
 const int HEIGHT = 32 * PIXEL_WIDTH;
 
-const string FILENAME = "IBM Logo.ch8";
+const string FILENAME = "prog\\games\\Airplane.ch8";
 
 SDL_Window* window = NULL;
 SDL_Surface* screen = NULL;
@@ -50,6 +51,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		exit(1);
 	}
 
+	// Create CPU and load application
 	printf("CHIP8 EMULATOR - GORDON GUAN\n");
 	Chip8CPU cpu;
 	bool loaded = cpu.loadApplication("D:\\Programming\\C++\\Chip8Emu\\Release\\" + FILENAME);
@@ -63,6 +65,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	SDL_Event e;
 	while (!quit)
 	{
+		// Handle events
 		while (SDL_PollEvent(&e) != 0)
 		{
 			if (e.type == SDL_QUIT)
@@ -180,16 +183,17 @@ int _tmain(int argc, _TCHAR* argv[])
 		}
 
 		if (cpu.draw_flag){
+			// Blank the screen
 			SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
 			SDL_RenderClear(renderer);
 			SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-			unsigned char* gfx = cpu.getGFX();
 
+			// Draw every pixel
 			for (int y = 0; y < 32; ++y)
 			{
 				for (int x = 0; x < 64; ++x)
 				{
-					unsigned char pixel = gfx[y * 64 + x];
+					unsigned char pixel = cpu.gfx[y * 64 + x];
 					if (pixel != 0)
 					{
 						SDL_Rect fillRect = { x * PIXEL_WIDTH , y * PIXEL_WIDTH, PIXEL_WIDTH, PIXEL_WIDTH };
@@ -201,9 +205,10 @@ int _tmain(int argc, _TCHAR* argv[])
 			//Update screen
 			SDL_RenderPresent(renderer);
 			cpu.draw_flag = false;
+			// Limit FPS
+			SDL_Delay(FRAME_DELAY);
 		}
 		cpu.emulateCycle();
-		SDL_Delay(1);
 	}
 	close();
 	return 0;

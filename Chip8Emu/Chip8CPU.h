@@ -3,6 +3,7 @@
 class Chip8CPU
 {
 public:
+	unsigned char gfx[64 * 32];
 	unsigned char key[16];
 	bool draw_flag;
 
@@ -11,14 +12,8 @@ public:
 	
 	void emulateCycle();
 
-	unsigned char* getGFX();
 	bool loadApplication(std::string filename);
 private:
-	void clearScreen();
-	void clearMemory();
-	void clearRegisters();
-	void clearStack();
-	void clearKeys();
 	void initialize();
 	static bool exists_test(const std::string& name);
 

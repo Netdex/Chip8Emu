@@ -34,7 +34,6 @@ unsigned char memory[4096];
 unsigned char V[16];
 unsigned short I;
 unsigned short pc;
-unsigned char gfx[64 * 32];
 unsigned char delay_timer;
 unsigned char sound_timer;
 unsigned short stack[16];
@@ -55,11 +54,16 @@ void Chip8CPU::initialize()
 	pc = 0x200;
 	sp = 0;
 
-	clearScreen();
-	clearMemory();
-	clearRegisters();
-	clearStack();
-	clearKeys();
+	for (int i = 0; i < 64 * 32; i++)
+		gfx[i] = 0;
+	draw_flag = true;
+	for (int i = 0; i < 4096; i++)
+		memory[i] = 0;
+	for (int i = 0; i < 16; i++){
+		V[i] = 0;
+		stack[i] = 0;
+		key[i] = 0;
+	}
 
 	delay_timer = 0;
 	sound_timer = 0;
@@ -435,35 +439,5 @@ void Chip8CPU::emulateCycle()
 			cout << "\a";
 		--sound_timer;
 	}
-}
-unsigned char* Chip8CPU::getGFX()
-{
-	return gfx;
-}
-void Chip8CPU::clearScreen()
-{
-	for (int i = 0; i < 64 * 32; i++)
-		gfx[i] = 0;
-	draw_flag = true;
-}
-void Chip8CPU::clearMemory()
-{
-	for (int i = 0; i < 4096; i++)
-		memory[i] = 0;
-}
-void Chip8CPU::clearRegisters()
-{
-	for (int i = 0; i < 16; i++)
-		V[i] = 0;
-}
-void Chip8CPU::clearStack()
-{
-	for (int i = 0; i < 16; i++)
-		stack[i] = 0;
-}
-void Chip8CPU::clearKeys()
-{
-	for (int i = 0; i < 16; i++)
-		key[i] = 0;
 }
 
