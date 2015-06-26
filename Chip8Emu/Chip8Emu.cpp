@@ -11,11 +11,14 @@ using namespace std;
 
 const int PIXEL_WIDTH = 16;
 const int FRAME_DELAY = 10;
+const int CPU_DELAY = 3;
 
 const int WIDTH = 64 * PIXEL_WIDTH;
 const int HEIGHT = 32 * PIXEL_WIDTH;
 
-const string FILENAME = "prog\\games\\Airplane.ch8";
+const string CURRENT_PATH = "D:\\Programming\\C++\\Chip8Emu\\Release\\";
+const string FILENAME = CURRENT_PATH + "prog\\games\\Tron.ch8";
+const string BEEP_FILE = "";
 
 SDL_Window* window = NULL;
 SDL_Surface* screen = NULL;
@@ -54,7 +57,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	// Create CPU and load application
 	printf("CHIP8 EMULATOR - GORDON GUAN\n");
 	Chip8CPU cpu;
-	bool loaded = cpu.loadApplication("D:\\Programming\\C++\\Chip8Emu\\Release\\" + FILENAME);
+	bool loaded = cpu.loadApplication(FILENAME);
 	if (!loaded)
 	{
 		printf("Failed to load Chip8 application!");
@@ -208,6 +211,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			// Limit FPS
 			SDL_Delay(FRAME_DELAY);
 		}
+		SDL_Delay(CPU_DELAY);
 		cpu.emulateCycle();
 	}
 	close();

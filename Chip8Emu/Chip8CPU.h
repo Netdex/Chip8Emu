@@ -1,5 +1,16 @@
 #pragma once
+#include <cstdlib>
+#include <algorithm>
+#include "time.h"
+#include <exception>
+#include <iostream>
+#include <fstream>
 #include <string>
+#include "windows.h"
+#include <thread>
+
+using namespace std;
+
 class Chip8CPU
 {
 public:
@@ -12,10 +23,10 @@ public:
 	
 	void emulateCycle();
 
-	bool loadApplication(std::string filename);
+	bool loadApplication(string filename);
 private:
 	void initialize();
-	static bool exists_test(const std::string& name);
+
 
 };
 
